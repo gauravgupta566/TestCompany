@@ -1,9 +1,12 @@
 package com.example.demochat.testsuntist;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -12,21 +15,35 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
 
-    TextView user_sex,user_age,user_name,maleradio,femaleradio;
+    TextView maleradio,femaleradio,companytitle;
     Button submitbutton;
     EditText myname,myage;
+    RecyclerView friends_recyclerview;
 
     String selecetedradio="null";
+    Typeface typeface;
+
+    ArrayList<Model> arrayList=new ArrayList<>();
+
+    Adapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+     typeface=  Typeface.createFromAsset(getAssets(),"futuramediumbt.ttf");
 
+        companytitle=(TextView)findViewById(R.id.companytitle);
+        companytitle.setTypeface(typeface);
+
+        friends_recyclerview=(RecyclerView)findViewById(R.id.recyclerview);
         myname=(EditText) findViewById(R.id.myname);
         myage=(EditText) findViewById(R.id.myage);
 
@@ -34,10 +51,6 @@ public class MainActivity extends AppCompatActivity {
         femaleradio=(TextView)findViewById(R.id.femaleradio);
 
         submitbutton=(Button)findViewById(R.id.submitbutton);
-        user_sex=(TextView)findViewById(R.id.user_sex);
-        user_age=(TextView)findViewById(R.id.user_age);
-        user_name=(TextView)findViewById(R.id.user_name);
-
 
         myname.addTextChangedListener(new TextWatcher() {
             @Override
@@ -103,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     gd.setColor(Color.parseColor("#ffffff"));
                     gd.setCornerRadius(10);
 
-                    gd1.setColor(Color.parseColor("#FF4081"));
+                    gd1.setColor(Color.parseColor("#e31208"));
                     gd1.setCornerRadius(10);
 
                     maleradio.setBackground(gd1);
@@ -115,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     selecetedradio="male";
                     GradientDrawable gd1 = new GradientDrawable();
-                    gd1.setColor(Color.parseColor("#FF4081"));
+                    gd1.setColor(Color.parseColor("#e31208"));
                     gd1.setCornerRadius(10);
 
                     maleradio.setBackground(gd1);
@@ -139,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                     gd.setColor(Color.parseColor("#ffffff"));
                     gd.setCornerRadius(10);
 
-                    gd1.setColor(Color.parseColor("#FF4081"));
+                    gd1.setColor(Color.parseColor("#e31208"));
                     gd1.setCornerRadius(10);
 
                     maleradio.setBackground(gd);
@@ -151,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
                     selecetedradio="female";
                     GradientDrawable gd1 = new GradientDrawable();
-                    gd1.setColor(Color.parseColor("#FF4081"));
+                    gd1.setColor(Color.parseColor("#e31208"));
                     gd1.setCornerRadius(10);
                     femaleradio.setBackground(gd1);
                 }
@@ -163,16 +176,34 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
               if(myage.getText().length()>0 &&myname.getText().length()>0 &&selecetedradio!="null" ) {
+                 arrayList.add(new Model(myname.getText().toString(),myage.getText().toString(),selecetedradio));
 
 
-                  user_age.setText(myage.getText().toString());
-                  user_name.setText(myname.getText().toString());
-                  user_sex.setText(selecetedradio);
+
+                  LinearLayoutManager  linearLayoutManager = new LinearLayoutManager(MainActivity.this);
+                  linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                  friends_recyclerview.setLayoutManager(linearLayoutManager);
+                  friends_recyclerview.setHasFixedSize(true);
+
+                  adapter=new Adapter(MainActivity.this,arrayList);
+                  friends_recyclerview.setAdapter(adapter);
 
 
               }
                 else {
-                  Toast.makeText(MainActivity.this,"either you have not filled details",Toast.LENGTH_LONG).show();
+                  if(arrayList.size()>0) {
+
+                    LinearLayoutManager  linearLayoutManager = new LinearLayoutManager(MainActivity.this);
+                      linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                      friends_recyclerview.setLayoutManager(linearLayoutManager);
+                      friends_recyclerview.setHasFixedSize(true);
+
+                      adapter=new Adapter(MainActivity.this,arrayList);
+                      friends_recyclerview.setAdapter(adapter);
+                  }
+                  else {
+                      Toast.makeText(MainActivity.this, "either you have not filled details", Toast.LENGTH_LONG).show();
+                  }
               }
 
 

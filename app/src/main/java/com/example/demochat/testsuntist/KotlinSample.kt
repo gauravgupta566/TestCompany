@@ -19,7 +19,18 @@ import android.widget.Toast
 class KotlinSample : AppCompatActivity() {
 
 
-   /* internal var user_sex: TextView?=null
+   lateinit var user_sex: TextView
+    lateinit var user_name: TextView
+    lateinit var maleradio: TextView
+    lateinit var femaleradio: TextView
+    lateinit var user_age: TextView
+
+    lateinit var submitbutton: TextView
+    lateinit var myname: EditText
+    lateinit var myage: EditText
+
+
+    /* internal var user_sex: TextView?=null
     internal var user_age: TextView?=null
     internal var user_name: TextView?=null
     internal var maleradio: TextView?=null
@@ -34,14 +45,14 @@ class KotlinSample : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var myname = findViewById(R.id.myname) as EditText
-        var myage = findViewById(R.id.myage) as EditText
-        var maleradio = findViewById(R.id.maleradio) as TextView
-        var femaleradio = findViewById(R.id.femaleradio) as TextView
-        var submitbutton = findViewById(R.id.submitbutton) as Button
-        var user_sex = findViewById(R.id.user_sex) as TextView
-        var user_age = findViewById(R.id.user_age) as TextView
-        var user_name = findViewById(R.id.user_name) as TextView
+         myname = findViewById(R.id.myname) as EditText
+         myage = findViewById(R.id.myage) as EditText
+         maleradio = findViewById(R.id.maleradio) as TextView
+         femaleradio = findViewById(R.id.femaleradio) as TextView
+         submitbutton = findViewById(R.id.submitbutton) as Button
+         user_sex = findViewById(R.id.user_sex) as TextView
+         user_age = findViewById(R.id.user_age) as TextView
+         user_name = findViewById(R.id.user_name) as TextView
 
 
         myname.addTextChangedListener(object : TextWatcher {
